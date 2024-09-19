@@ -12,6 +12,15 @@
             padding: 0;
             transition: background-color 0.5s;
         }
+        #color-to-find {
+            margin: 20px 0;
+        }
+        #target-color {
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+            border: 1px solid #ddd;
+        }
         #game-board {
             display: grid;
             grid-template-columns: repeat(10, 50px);
@@ -45,7 +54,7 @@
 </head>
 <body>
     <h1>Find The Color Game</h1>
-    <p id="color-to-find">Find the color: <span id="target-color-name"></span></p>
+    <p id="color-to-find">Find the color: <span id="target-color"></span></p>
     <div id="game-board"></div>
     <p id="message"></p>
     <p id="winner-message">You are the winner!</p>
@@ -53,18 +62,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
-        // Array of color names and their corresponding colors
+        // Array of similar shades of colors
         const colors = [
-            { name: 'Light Blue', color: '#ADD8E6' },
-            { name: 'Light Green', color: '#90EE90' },
-            { name: 'Light Yellow', color: '#FFFFE0' },
-            { name: 'Light Pink', color: '#FFB6C1' },
-            { name: 'Light Coral', color: '#F08080' },
-            { name: 'Light Salmon', color: '#FFA07A' },
-            { name: 'Light Goldenrod', color: '#FAFAD2' },
-            { name: 'Light Sea Green', color: '#20B2AA' },
-            { name: 'Light Slate Gray', color: '#778899' },
-            { name: 'Light Gray', color: '#D3D3D3' }
+            '#f8d7da', '#f6c1c1', '#f5a4a4', '#f47f7f',
+            '#f24e4e', '#ef1f1f', '#ec0000', '#e40000',
+            '#d90000', '#d00000'
         ];
 
         function getRandomColor() {
@@ -74,23 +76,24 @@
 
         function setUpGame() {
             const gameBoard = document.getElementById('game-board');
-            const targetColorNameElement = document.getElementById('target-color-name');
+            const targetColorElement = document.getElementById('target-color');
             const messageElement = document.getElementById('message');
             const winnerMessage = document.getElementById('winner-message');
             const loserMessage = document.getElementById('loser-message');
 
             // Select a random target color
             const targetColor = getRandomColor();
-            targetColorNameElement.textContent = targetColor.name;
+            targetColorElement.style.backgroundColor = targetColor;
+            targetColorElement.setAttribute('data-color', targetColor);
 
             // Create 100 squares
             for (let i = 0; i < 100; i++) {
                 const square = document.createElement('div');
                 square.className = 'square';
                 const color = getRandomColor();
-                square.style.backgroundColor = color.color;
+                square.style.backgroundColor = color;
                 square.addEventListener('click', () => {
-                    if (color.color === targetColor.color) {
+                    if (color === targetColor) {
                         // Play confetti and show winner message
                         confetti();
                         winnerMessage.style.display = 'block';
