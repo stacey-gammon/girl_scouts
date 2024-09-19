@@ -6,48 +6,70 @@
     <title>Game Prompts</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
             padding: 20px;
-            background-color: #e8f5e9; /* Light green background */
+            background-color: #fafafa; /* Very light grey background */
             color: #333;
             line-height: 1.6;
         }
 
+        h1, h2 {
+            color: #333; /* Dark grey */
+            margin-top: 0;
+            padding: 0;
+        }
+
         h1 {
-            color: #2e7d32; /* Dark green */
+            font-size: 2rem;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         .game-title {
-            font-size: 1.5rem;
-            color: #2e7d32; /* Dark green */
-            cursor: pointer;
-            text-decoration: underline;
+            font-size: 1.25rem;
+            color: #007bff; /* Blue */
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
             transition: color 0.3s ease;
         }
 
         .game-title:hover {
-            color: #1b5e20; /* Darker green */
+            color: #0056b3; /* Darker blue */
         }
 
         .prompt {
-            margin-top: 10px;
-            font-size: 1rem;
-            color: #555;
-            background-color: #f9fbe7; /* Very light green */
-            border-left: 4px solid #81c784; /* Medium green */
-            padding: 10px;
-            border-radius: 5px;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ffffff;
+            border: 1px solid #ddd; /* Light grey border */
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .prompt a {
+            font-size: 1.1rem;
+            color: #007bff; /* Blue */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .prompt a:hover {
+            color: #0056b3; /* Darker blue */
         }
 
         .prompt ul {
@@ -64,44 +86,45 @@
         .follow-ups {
             margin-top: 20px;
             padding: 10px;
-            border: 1px solid #81c784; /* Medium green */
-            border-radius: 5px;
-            background-color: #e8f5e9; /* Light green */
+            border: 1px solid #ddd; /* Light grey border */
+            background-color: #f9f9f9; /* Very light grey */
         }
 
         footer {
             margin-top: 30px;
             text-align: center;
             font-size: 0.8rem;
-            color: #888;
+            color: #777;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Web Page Prompts</h1>
+        <h1>Girl Scouts Code With ChatGPT!</h1>
 
-        <div class="game-section">
-            <div class="game-title">
-                 <a href="draw.html">
-                Drawing Pad
-                 </a>
-            </div>
-            <div id="memory-prompt" class="prompt" style="display: block;">
+        <h2>Instructions</h2>
+        <ol>
+            <li>Navigate to <a href="https://chatgpt.com/">ChatGPT</a>. You will need a parent to create an account.</li>
+            <li>Tell GPT what kind of website you want to build. See the examples below to help get you started, but it will be useful if you start your prompt with <i>"Please provide me code to paste into an HTML file..."</i>. Don't worry if you don't know what "HTML" is, it doesn't matter!</li>
+            <li>Sign into <a href="https://codepen.io/">CodePen</a> and paste the generated code into the "HTML" section, and see what happens!</li>
+            <li>Keep telling GPT what changes you want it to make! Have fun!</li>
+        </ol>
+
+        <h2>Examples</h2>
+
+        <div class="prompt">
+            <a href="draw.html" class="game-title">Drawing Pad</a>
+            <div>
                 <b>Prompt</b><br/>
                 Please provide me code to paste into an HTML file so that the user can draw some basic images on the screen.
             </div>
         </div>
         
-        <div class="game-section">
-            <div class="game-title">
-                 <a href="memory_game.html">
-                Memory Game
-                 </a>
-            </div>
-            <div id="memory-prompt" class="prompt" style="display: block;">
+        <div class="prompt">
+            <a href="memory_game.html" class="game-title">Memory Game</a>
+            <div>
                 <b>Prompt</b><br/>
-                Please provide me code to paste into an HTML file to play a game of “Memory”. Keep track of score for each player. Assume two players. If a player gets it correct, they get to go again.
+                Please provide me code to paste into an HTML file to play a game of “Memory”. Keep track of the score for each player. Assume two players. If a player gets it correct, they get to go again.
                 <ul>
                     <li>Show 25 cards - use a 5x5 grid.</li>
                     <li>Use a pale blue and yellow color palette for the web page. Make it look professional, yet playful. Maybe some stripes.</li>
@@ -110,27 +133,25 @@
             </div>
         </div>
 
-        <div class="game-section">
-            <div class="game-title"">
-                 <a href="find_me_game.html">
-                 Find The Color Game
-                 </a>
-            </div>
-            <div id="color-prompt" class="prompt" style="display: block;">
+        <div class="prompt">
+            <a href="find_me_game.html" class="game-title">Find The Color Game</a>
+            <div>
                 <b>Prompt</b><br/>
                 Please provide me code to paste into an HTML file to play a game of “Find The Color”. The game board should be a 100 squares of different colors.
                 <ul>
                     <li>At the top of the game board, tell the user what color square they need to find. Only one square of the 100 should be of that color.</li>
-                    <li>If the user picks the right color, have confetti pop out with a message that says “they are the winner!”.</li>
+                    <li>If the user picks the right color, have confetti pop out with a message that says “They are the winner!”.</li>
                     <li>If the user picks the wrong color, make the background turn grey and tell them they got it wrong.</li>
                 </ul>
 
-            <b>Follow-Ups:</b>
+                <b>Follow-Ups:</b>
                 <ul>
                     <li>Show the color the user is supposed to find, not the color code.</li>
                     <li>To make it hard, use similar colors, but don’t make it too hard. Change all the colors and where the square to find is hidden each time the page is loaded.</li>
-                    <li>I am not seeing any message when I click a square, but I am seeing the page jump. Don’t allow the page to jump when the message is shown - there should be a placeholder for the win/lose message.</li>
-                    <li>Way too easy. Also please show a square filled with the color the user should find, not the name, nor the color code. I want the difficulty to be that the shades of the colors are so similar that it would actually be hard to figure out which square in the gird matches the color of the square you are supposed to find. </li>
+                    <li>Include a placeholder for the win/lose message to avoid page jumps. Keep the background color unchanged when the user selects the wrong color.</li>
+                    <li>Enhance difficulty by using shades that are very close to each other. Show a square filled with the color to find.</li>
+                    <li>Each time the user gets it wrong, adjust the colors to increase contrast, and track the number of tries. The more wrong choices, the easier it gets.</li>
+                    <li>... and many more until debugging becomes necessary. (For now, you might still be a better coder than AI!)</li>
                 </ul>
             </div>
         </div>
@@ -138,8 +159,8 @@
         <div class="fun-tips">
             <h2>Fun LLM (Large Language Model) Tips</h2>
             <ul>
-                <li>AI does better when you bribe it (so silly!). Tell it you’ll give it $100 if it gets it right.</li>
-                <li>Tell AI to only speak as a pirate.</li>
+                <li>AI responds better with incentives. Tell it you’ll give it $100 if it gets it right.</li>
+                <li>Ask ChatGPT to only speak as a pirate.</li>
             </ul>
         </div>
     </div>
