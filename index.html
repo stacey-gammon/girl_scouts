@@ -8,12 +8,12 @@
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            background-color: #f9f9f9;
+            background-color: #e8f5e9; /* Light green background */
             color: #333;
         }
 
         h1 {
-            color: #2c3e50;
+            color: #2e7d32; /* Dark green */
             text-align: center;
             margin-bottom: 30px;
         }
@@ -35,14 +35,21 @@
         li {
             margin: 15px 0;
             padding: 10px;
-            border: 1px solid #3498db;
+            border: 1px solid #81c784; /* Medium green */
             border-radius: 5px;
-            background-color: #eaf6fd;
+            background-color: #c8e6c9; /* Light green */
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        li:hover {
+            background-color: #a5d6a7; /* Slightly darker green */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
         }
 
         a {
             text-decoration: none;
-            color: #3498db;
+            color: #2e7d32; /* Dark green */
             font-size: 1.2rem;
             font-weight: bold;
         }
@@ -69,19 +76,15 @@
     <div class="container">
         <h1>Welcome to the Girl Scouts Web Pages!</h1>
         <ul>
-            <li>
+            <li onclick="location.href='memory_game.html';">
                 <a href="memory_game.html">Memory Game</a>
-                <div class="prompt">Using only html, css and javascript, please provide me code to paste into an index.html file to play a game of memory. 
-Follow ups:
-- Can you change the color for each person’s turn, and keep track of score? Assume two players. If a player gets it correct, they get to go again.
-- There should be 20 cards.
-</div>
+                <div class="prompt">Prompt: Create a simple memory game using HTML, CSS, and JavaScript.</div>
             </li>
-            <li>
+            <li onclick="location.href='other_game.html';">
                 <a href="other_game.html">Other Game</a>
                 <div class="prompt">Prompt: Create another fun game using web technologies.</div>
             </li>
-            <li>
+            <li onclick="location.href='another_activity.html';">
                 <a href="another_activity.html">Another Activity</a>
                 <div class="prompt">Prompt: Develop an interactive activity for users.</div>
             </li>
