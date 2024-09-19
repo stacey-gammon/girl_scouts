@@ -62,6 +62,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
+        let minVariance = 10;
+        let maxVariance = 50;
+        let tries = 0;
+        let targetColor, baseColor;
+
         function randomColor(baseColor, minVariance, maxVariance) {
             const variance = Math.floor(Math.random() * (maxVariance - minVariance + 1)) + minVariance;
             const r = Math.min(255, Math.max(0, baseColor[0] + Math.floor(Math.random() * variance) - variance / 2));
@@ -86,46 +91,60 @@
             const loserMessage = document.getElementById('loser-message');
 
             // Pick a random base color for the target
-            const baseColor = getRandomBaseColor();
-            const targetColor = `rgb(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]})`;
+            baseColor = getRandomBaseColor();
+            targetColor = `rgb(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]})`;
             targetColorElement.style.backgroundColor = targetColor;
 
-            // Generate similar shades
-            const minVariance = 10;
-            const maxVariance = 50;
-            const colors = [];
-            for (let i = 0; i < 100; i++) {
-                if (i === Math.floor(Math.random() * 100)) {
-                    colors.push(targetColor); // Ensure one square is the target color
-                } else {
-                    colors.push(randomColor(baseColor, minVariance, maxVariance)); // Variance for similar shades
+            function generateColors() {
+                const colors = [];
+                for (let i = 0; i < 100; i++) {
+                    if (i === Math.floor(Math.random() * 100)) {
+                        colors.push(targetColor); // Ensure one square is the target color
+                    } else {
+                        colors.push(randomColor(baseColor, minVariance, maxVariance)); // Variance for similar shades
+                    }
                 }
+                // Shuffle colors
+                colors.sort(() => Math.random() - 0.5);
+                return colors;
             }
 
-            // Shuffle colors
-            colors.sort(() => Math.random() - 0.5);
-
-            // Create squares with shuffled colors
-            colors.forEach(color => {
-                const square = document.createElement('div');
-                square.className = 'square';
-                square.style.backgroundColor = color;
-                square.addEventListener('click', () => {
-                    if (color === targetColor) {
-                        // Play confetti and show winner message
-                        confetti();
-                        winnerMessage.style.display = 'block';
-                        loserMessage.style.display = 'none';
-                        messageElement.textContent = '';
-                    } else {
-                        // Show message
-                        messageElement.textContent = '';
-                        winnerMessage.style.display = 'none';
-                        loserMessage.style.display = 'block';
-                    }
+            function resetGame() {
+                // Clear previous squares
+                gameBoard.innerHTML = '';
+                // Generate new colors
+                const colors = generateColors();
+                // Create squares with shuffled colors
+                colors.forEach(color => {
+                    const square = document.createElement('div');
+                    square.className = 'square';
+                    square.style.backgroundColor = color;
+                    square.addEventListener('click', () => {
+                        tries++;
+                        if (color === targetColor) {
+                            // Play confetti and show winner message
+                            confetti();
+                            winnerMessage.style.display = 'block';
+                            loserMessage.style.display = 'none';
+                            messageElement.textContent = `It took you ${tries} tries to find the color.`;
+                        } else {
+                            // Show message and update color variance
+                            messageElement.textContent = '';
+                            winnerMessage.style.display = 'none';
+                            loserMessage.style.display = 'block';
+                            minVariance += 2;
+                            maxVariance += 2;
+                            baseColor = getRandomBaseColor(); // Pick a new base color for the next round
+                            targetColor = `rgb(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]})`;
+                            targetColorElement.style.backgroundColor = targetColor;
+                            resetGame(); // Restart the game with updated colors
+                        }
+                    });
+                    gameBoard.appendChild(square);
                 });
-                gameBoard.appendChild(square);
-            });
+            }
+
+            resetGame(); // Initialize the game
         }
 
         window.onload = setUpGame;
