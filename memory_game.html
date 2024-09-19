@@ -7,6 +7,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f0f4f8; /* Light blue */
+            color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -16,193 +18,162 @@
         }
 
         h1 {
-            margin-bottom: 10px;
+            color: #003366; /* Dark blue */
         }
 
-        #game-board {
+        .scoreboard {
+            margin-bottom: 20px;
+        }
+
+        .scoreboard div {
+            font-size: 1.2rem;
+            margin: 5px;
+        }
+
+        .game-board {
             display: grid;
             grid-template-columns: repeat(4, 100px);
+            grid-template-rows: repeat(5, 100px);
             gap: 10px;
+            margin-bottom: 20px;
         }
 
         .card {
             width: 100px;
             height: 100px;
-            background-color: #2c3e50;
+            background-color: #ffeb3b; /* Yellow */
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
-            color: white;
             cursor: pointer;
+            color: #003366; /* Dark blue */
             border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            user-select: none;
+        }
+
+        .card img {
+            display: none;
         }
 
         .card.flipped {
-            background-color: #e74c3c;
+            background-color: #003366; /* Dark blue */
+            color: #ffeb3b; /* Yellow */
         }
 
-        #scores {
-            display: flex;
-            justify-content: space-between;
-            width: 300px;
-            margin: 20px;
+        .card img.show {
+            display: block;
+            font-size: 1.2rem;
+            color: #ffeb3b; /* Yellow */
         }
 
-        .player {
-            font-weight: bold;
-        }
-
-        .turn {
-            background-color: yellow;
-            padding: 5px;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #2980b9;
+        .card.hidden {
+            background-color: #cccccc; /* Gray */
         }
     </style>
 </head>
 <body>
     <h1>Memory Game</h1>
-    <div id="scores">
-        <div id="player1" class="player turn">Player 1: <span id="score1">0</span></div>
-        <div id="player2" class="player">Player 2: <span id="score2">0</span></div>
+    <div class="scoreboard">
+        <div>Player 1 Score: <span id="player1-score">0</span></div>
+        <div>Player 2 Score: <span id="player2-score">0</span></div>
+        <div>Current Player: <span id="current-player">Player 1</span></div>
     </div>
-    <div id="game-board"></div>
-    <button id="restart-btn">Restart Game</button>
+    <div class="game-board" id="game-board"></div>
 
     <script>
-        const cardsArray = [
-            { name: 'A', matched: false },
-            { name: 'B', matched: false },
-            { name: 'C', matched: false },
-            { name: 'D', matched: false },
-            { name: 'E', matched: false },
-            { name: 'F', matched: false },
-            { name: 'A', matched: false },
-            { name: 'B', matched: false },
-            { name: 'C', matched: false },
-            { name: 'D', matched: false },
-            { name: 'E', matched: false },
-            { name: 'F', matched: false }
+        const animals = [
+            '🦁', '🐯', '🐵', '🐸', '🐶', '🐱', '🦊', '🐨',
+            '🦁', '🐯', '🐵', '🐸', '🐶', '🐱', '🦊', '🐨',
+            '🐼', '🦒', '🦍', '🐷', '🐹', '🐭', '🦔', '🐨',
+            '🐼', '🦒', '🦍', '🐷', '🐹', '🐭', '🦔', '🐨'
         ];
 
+        let board = [];
         let firstCard = null;
         let secondCard = null;
-        let lockBoard = false;
+        let player1Score = 0;
+        let player2Score = 0;
         let currentPlayer = 1;
-        let scores = { player1: 0, player2: 0 };
+        let cardsFlipped = 0;
 
         function createBoard() {
-            const board = document.getElementById('game-board');
-            board.innerHTML = '';
+            const gameBoard = document.getElementById('game-board');
+            const shuffledAnimals = animals.sort(() => 0.5 - Math.random());
 
-            // Reset scores and players
-            scores = { player1: 0, player2: 0 };
-            currentPlayer = 1;
-            updateScores();
-            updateTurn();
+            shuffledAnimals.forEach((animal, index) => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.dataset.animal = animal;
+                card.dataset.index = index;
 
-            // Shuffle cards
-            const shuffledCards = cardsArray.sort(() => 0.5 - Math.random());
+                const img = document.createElement('img');
+                img.textContent = animal;
+                card.appendChild(img);
 
-            shuffledCards.forEach((card, index) => {
-                const cardElement = document.createElement('div');
-                cardElement.classList.add('card');
-                cardElement.setAttribute('data-name', card.name);
-                cardElement.addEventListener('click', () => flipCard(cardElement, card));
-                board.appendChild(cardElement);
+                card.addEventListener('click', () => flipCard(card));
+                gameBoard.appendChild(card);
+                board.push(card);
             });
         }
 
-        function flipCard(cardElement, card) {
-            if (lockBoard || cardElement.classList.contains('flipped') || card.matched) return;
+        function flipCard(card) {
+            if (card.classList.contains('flipped') || secondCard) return;
 
-            cardElement.classList.add('flipped');
-            cardElement.innerText = card.name;
+            card.classList.add('flipped');
+            card.querySelector('img').classList.add('show');
 
             if (!firstCard) {
-                firstCard = { cardElement, card };
+                firstCard = card;
             } else {
-                secondCard = { cardElement, card };
-                lockBoard = true;
-
-                checkForMatch();
+                secondCard = card;
+                checkMatch();
             }
         }
 
-        function checkForMatch() {
-            if (firstCard.card.name === secondCard.card.name) {
-                firstCard.card.matched = true;
-                secondCard.card.matched = true;
-
-                // Update score and keep the current player turn
-                if (currentPlayer === 1) {
-                    scores.player1++;
-                } else {
-                    scores.player2++;
-                }
-
-                updateScores();
-                resetCards();
+        function checkMatch() {
+            if (firstCard.dataset.animal === secondCard.dataset.animal) {
+                firstCard.removeEventListener('click', () => flipCard(firstCard));
+                secondCard.removeEventListener('click', () => flipCard(secondCard));
+                cardsFlipped += 2;
+                updateScore();
+                resetTurn();
             } else {
                 setTimeout(() => {
-                    firstCard.cardElement.classList.remove('flipped');
-                    firstCard.cardElement.innerText = '';
-                    secondCard.cardElement.classList.remove('flipped');
-                    secondCard.cardElement.innerText = '';
-
-                    // Switch player if no match
-                    switchPlayer();
-                    resetCards();
+                    firstCard.classList.remove('flipped');
+                    secondCard.classList.remove('flipped');
+                    firstCard.querySelector('img').classList.remove('show');
+                    secondCard.querySelector('img').classList.remove('show');
+                    resetTurn();
                 }, 1000);
             }
         }
 
-        function switchPlayer() {
+        function resetTurn() {
+            firstCard = null;
+            secondCard = null;
             currentPlayer = currentPlayer === 1 ? 2 : 1;
-            updateTurn();
+            document.getElementById('current-player').textContent = `Player ${currentPlayer}`;
         }
 
-        function updateTurn() {
-            const player1Div = document.getElementById('player1');
-            const player2Div = document.getElementById('player2');
-
+        function updateScore() {
             if (currentPlayer === 1) {
-                player1Div.classList.add('turn');
-                player2Div.classList.remove('turn');
+                player1Score++;
+                document.getElementById('player1-score').textContent = player1Score;
+                if (cardsFlipped === board.length) {
+                    alert(`Game Over! Player 1 Score: ${player1Score}, Player 2 Score: ${player2Score}`);
+                }
             } else {
-                player2Div.classList.add('turn');
-                player1Div.classList.remove('turn');
+                player2Score++;
+                document.getElementById('player2-score').textContent = player2Score;
+                if (cardsFlipped === board.length) {
+                    alert(`Game Over! Player 1 Score: ${player1Score}, Player 2 Score: ${player2Score}`);
+                }
             }
         }
 
-        function updateScores() {
-            document.getElementById('score1').innerText = scores.player1;
-            document.getElementById('score2').innerText = scores.player2;
-        }
-
-        function resetCards() {
-            firstCard = null;
-            secondCard = null;
-            lockBoard = false;
-        }
-
-        document.getElementById('restart-btn').addEventListener('click', createBoard);
-
-        // Initialize game
-        createBoard();
+        window.onload = createBoard;
     </script>
 </body>
 </html>
