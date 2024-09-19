@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stacey's Fun Page</title>
+  <style>
+    /* Mint color palette */
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #E0F7F3; /* Mint green */
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      color: #2D767F; /* Dark mint */
+      text-align: center;
+    }
+
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: #A3DAD4; /* Light mint */
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .box:hover {
+      background-color: #88C9C4; /* Slightly darker mint */
+      transform: scale(1.05);
+    }
+
+    .box.clicked {
+      background-color: #FFD1D1; /* A scary red */
+      transform: rotate(10deg) scale(1.2);
+    }
+
+    .skeleton {
+      display: none;
+      position: absolute;
+      bottom: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      transition: transform 0.5s ease;
+    }
+
+    .box.clicked .skeleton {
+      display: block;
+      animation: riseUp 1s forwards;
+    }
+
+    @keyframes riseUp {
+      0% {
+        transform: translateX(-50%) translateY(100px);
+      }
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    .confetti {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 300px;
+      height: 300px;
+      background-image: url('https://media.giphy.com/media/26u4nJPf0JtQPdStq/giphy.gif');
+      background-size: cover;
+      transform: translateX(-50%);
+    }
+
+    .box.clicked .confetti {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="box" onclick="triggerSurprises()">
+    <h1>Click Me!</h1>
+    <img class="skeleton" src="https://media.giphy.com/media/3o7TKtnuHOHHUjR38Y/giphy.gif" alt="Skeleton" />
+    <div class="confetti"></div>
+  </div>
+
+  <script>
+    function triggerSurprises() {
+      const box = document.querySelector('.box');
+      box.classList.toggle('clicked');
+    }
+  </script>
+</body>
+</html>
