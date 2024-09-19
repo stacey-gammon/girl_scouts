@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Me Game</title>
+    <title>Find The Color Game</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
+            transition: background-color 0.5s;
         }
         #game-board {
             display: grid;
@@ -28,69 +29,80 @@
         #message {
             margin-top: 20px;
             font-size: 24px;
+            height: 50px;
         }
-        #sad-face {
-            display: none;
-            font-size: 50px;
-            color: #ff0000;
-        }
-        #happy-message {
+        #winner-message {
             display: none;
             font-size: 24px;
             color: #00ff00;
         }
+        #loser-message {
+            display: none;
+            font-size: 24px;
+            color: #ff0000;
+        }
     </style>
 </head>
 <body>
-    <h1>Find Me Game</h1>
-    <p id="color-to-find">Find the color: <span id="target-color"></span></p>
+    <h1>Find The Color Game</h1>
+    <p id="color-to-find">Find the color: <span id="target-color-name"></span></p>
     <div id="game-board"></div>
     <p id="message"></p>
-    <p id="happy-message">You are the winner!</p>
-    <p id="sad-face">:(</p>
+    <p id="winner-message">You are the winner!</p>
+    <p id="loser-message">Wrong color, try again!</p>
 
-    <audio id="happy-sound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
-    <audio id="sad-sound" src="https://www.soundjay.com/button/beep-09.wav" preload="auto"></audio>
-
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
+        // Array of color names and their corresponding colors
+        const colors = [
+            { name: 'Light Blue', color: '#ADD8E6' },
+            { name: 'Light Green', color: '#90EE90' },
+            { name: 'Light Yellow', color: '#FFFFE0' },
+            { name: 'Light Pink', color: '#FFB6C1' },
+            { name: 'Light Coral', color: '#F08080' },
+            { name: 'Light Salmon', color: '#FFA07A' },
+            { name: 'Light Goldenrod', color: '#FAFAD2' },
+            { name: 'Light Sea Green', color: '#20B2AA' },
+            { name: 'Light Slate Gray', color: '#778899' },
+            { name: 'Light Gray', color: '#D3D3D3' }
+        ];
+
         function getRandomColor() {
-            const letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
+            const randomIndex = Math.floor(Math.random() * colors.length);
+            return colors[randomIndex];
         }
 
         function setUpGame() {
             const gameBoard = document.getElementById('game-board');
-            const targetColorElement = document.getElementById('target-color');
+            const targetColorNameElement = document.getElementById('target-color-name');
             const messageElement = document.getElementById('message');
-            const happyMessage = document.getElementById('happy-message');
-            const sadFace = document.getElementById('sad-face');
-            const happySound = document.getElementById('happy-sound');
-            const sadSound = document.getElementById('sad-sound');
-            
-            let targetColor = getRandomColor();
-            targetColorElement.textContent = targetColor;
-            
+            const winnerMessage = document.getElementById('winner-message');
+            const loserMessage = document.getElementById('loser-message');
+
+            // Select a random target color
+            const targetColor = getRandomColor();
+            targetColorNameElement.textContent = targetColor.name;
+
             // Create 100 squares
             for (let i = 0; i < 100; i++) {
                 const square = document.createElement('div');
                 square.className = 'square';
                 const color = getRandomColor();
-                square.style.backgroundColor = color;
+                square.style.backgroundColor = color.color;
                 square.addEventListener('click', () => {
-                    if (color === targetColor) {
-                        happySound.play();
-                        happyMessage.style.display = 'block';
+                    if (color.color === targetColor.color) {
+                        // Play confetti and show winner message
+                        confetti();
+                        winnerMessage.style.display = 'block';
+                        loserMessage.style.display = 'none';
                         messageElement.textContent = '';
-                        sadFace.style.display = 'none';
+                        document.body.style.backgroundColor = '';
                     } else {
-                        sadSound.play();
-                        sadFace.style.display = 'block';
-                        messageElement.textContent = 'Try again!';
-                        happyMessage.style.display = 'none';
+                        // Change background color and show message
+                        document.body.style.backgroundColor = 'grey';
+                        messageElement.textContent = '';
+                        winnerMessage.style.display = 'none';
+                        loserMessage.style.display = 'block';
                     }
                 });
                 gameBoard.appendChild(square);
