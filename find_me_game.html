@@ -84,13 +84,13 @@
             // Select a random target color
             const targetColor = getRandomColor();
             targetColorElement.style.backgroundColor = targetColor;
-            targetColorElement.setAttribute('data-color', targetColor);
 
-            // Create 100 squares
+            // Create 100 squares with one matching the target color
+            const squares = [];
             for (let i = 0; i < 100; i++) {
                 const square = document.createElement('div');
                 square.className = 'square';
-                const color = getRandomColor();
+                const color = (i === Math.floor(Math.random() * 100)) ? targetColor : getRandomColor();
                 square.style.backgroundColor = color;
                 square.addEventListener('click', () => {
                     if (color === targetColor) {
@@ -99,10 +99,8 @@
                         winnerMessage.style.display = 'block';
                         loserMessage.style.display = 'none';
                         messageElement.textContent = '';
-                        document.body.style.backgroundColor = '';
                     } else {
-                        // Change background color and show message
-                        document.body.style.backgroundColor = 'grey';
+                        // Show message
                         messageElement.textContent = '';
                         winnerMessage.style.display = 'none';
                         loserMessage.style.display = 'block';
