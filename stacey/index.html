@@ -39,63 +39,77 @@
       transform: scale(1.05);
     }
 
-    .box.clicked {
-      background-color: #FFD1D1; /* A scary red */
-      transform: rotate(10deg) scale(1.2);
+    /* Hidden elements that will randomly appear */
+    .hidden {
+      display: none;
     }
 
     .skeleton {
-      display: none;
-      position: absolute;
-      bottom: -80px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      transition: transform 0.5s ease;
+      font-size: 12px;
+      white-space: pre;
+      color: #2D767F;
+      text-align: center;
+      padding: 10px;
     }
 
-    .box.clicked .skeleton {
+    .confetti {
+      width: 300px;
+      height: 300px;
+      background-image: url('https://media.giphy.com/media/26u4nJPf0JtQPdStq/giphy.gif');
+      background-size: cover;
+    }
+
+    .skeleton.shown, .confetti.shown {
       display: block;
       animation: riseUp 1s forwards;
     }
 
     @keyframes riseUp {
       0% {
-        transform: translateX(-50%) translateY(100px);
+        transform: translateY(100px);
       }
       100% {
-        transform: translateX(-50%) translateY(0);
+        transform: translateY(0);
       }
-    }
-
-    .confetti {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 300px;
-      height: 300px;
-      background-image: url('https://media.giphy.com/media/26u4nJPf0JtQPdStq/giphy.gif');
-      background-size: cover;
-      transform: translateX(-50%);
-    }
-
-    .box.clicked .confetti {
-      display: block;
     }
   </style>
 </head>
 <body>
-  <div class="box" onclick="triggerSurprises()">
+  <div class="box" onclick="triggerRandomSurprise()">
     <h1>Click Me!</h1>
-    <img class="skeleton" src="https://media.giphy.com/media/3o7TKtnuHOHHUjR38Y/giphy.gif" alt="Skeleton" />
-    <div class="confetti"></div>
+    <div class="skeleton hidden" id="skeleton">
+      <!-- ASCII Skeleton -->
+      <pre>
+       _______
+      /       \
+     /         \
+    |   O   O   |
+    |     ^     |
+     \_________/
+       /  |  \
+      /   |   \
+     /    |    \
+    </pre>
+    </div>
+    <div class="confetti hidden" id="confetti"></div>
   </div>
 
   <script>
-    function triggerSurprises() {
-      const box = document.querySelector('.box');
-      box.classList.toggle('clicked');
+    function triggerRandomSurprise() {
+      // Select random surprise
+      const surprises = ['skeleton', 'confetti'];
+      const randomSurprise = surprises[Math.floor(Math.random() * surprises.length)];
+
+      // Hide all surprises first
+      document.getElementById('skeleton').classList.remove('shown');
+      document.getElementById('confetti').classList.remove('shown');
+
+      // Show the randomly selected surprise
+      if (randomSurprise === 'skeleton') {
+        document.getElementById('skeleton').classList.add('shown');
+      } else if (randomSurprise === 'confetti') {
+        document.getElementById('confetti').classList.add('shown');
+      }
     }
   </script>
 </body>
