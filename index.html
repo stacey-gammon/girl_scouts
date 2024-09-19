@@ -82,10 +82,12 @@
         <h1>Game Prompts</h1>
 
         <div class="game-section">
-            <div class="game-title" onclick="document.getElementById('memory-prompt').style.display='block'">
+            <div class="game-title">
+                 <a href="memory_game.html">
                 Memory Game
+                 </a>
             </div>
-            <div id="memory-prompt" class="prompt" style="display: none;">
+            <div id="memory-prompt" class="prompt" style="display: block;">
                 Please provide me code to paste into an HTML file to play a game of “Memory”. Keep track of score for each player. Assume two players. If a player gets it correct, they get to go again.
                 <ul>
                     <li>Show 25 cards - use a 5x5 grid.</li>
@@ -96,26 +98,27 @@
         </div>
 
         <div class="game-section">
-            <div class="game-title" onclick="document.getElementById('color-prompt').style.display='block'">
-                Find The Color Game
+            <div class="game-title"">
+                 <a href="find_me_game.html">
+                 Find The Color Game
+                 </a>
             </div>
-            <div id="color-prompt" class="prompt" style="display: none;">
+            <div id="color-prompt" class="prompt" style="display: block;">
                 Please provide me code to paste into an HTML file to play a game of “Find The Color”. The game board should be a 100 squares of different colors.
                 <ul>
                     <li>At the top of the game board, tell the user what color square they need to find. Only one square of the 100 should be of that color.</li>
                     <li>If the user picks the right color, have confetti pop out with a message that says “they are the winner!”.</li>
                     <li>If the user picks the wrong color, make the background turn grey and tell them they got it wrong.</li>
                 </ul>
-            </div>
-        </div>
 
-        <div class="follow-ups">
-            <h2>Follow-Ups Needed:</h2>
-            <ul>
-                <li>Show the color the user is supposed to find, not the color code.</li>
-                <li>To make it hard, use similar colors, but don’t make it too hard. Change all the colors and where the square to find is hidden each time the page is loaded.</li>
-                <li>I am not seeing any message when I click a square, but I am seeing the page jump. Don’t allow the page to jump when the message is shown - there should be a placeholder for the win/lose message.</li>
-            </ul>
+            <b>Follow-Ups:</b>
+                <ul>
+                    <li>Show the color the user is supposed to find, not the color code.</li>
+                    <li>To make it hard, use similar colors, but don’t make it too hard. Change all the colors and where the square to find is hidden each time the page is loaded.</li>
+                    <li>I am not seeing any message when I click a square, but I am seeing the page jump. Don’t allow the page to jump when the message is shown - there should be a placeholder for the win/lose message.</li>
+                    <li>Way too easy. Also please show a square filled with the color the user should find, not the name, nor the color code. I want the difficulty to be that the shades of the colors are so similar that it would actually be hard to figure out which square in the gird matches the color of the square you are supposed to find. </li>
+                </ul>
+            </div>
         </div>
 
         <div class="fun-tips">
