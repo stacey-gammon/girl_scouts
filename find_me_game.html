@@ -67,11 +67,10 @@
         let tries = 0;
         let targetColor, baseColor;
 
-        function randomColor(baseColor, minVariance, maxVariance) {
-            const variance = Math.floor(Math.random() * (maxVariance - minVariance + 1)) + minVariance;
-            const r = Math.min(255, Math.max(0, baseColor[0] + Math.floor(Math.random() * variance) - variance / 2));
-            const g = Math.min(255, Math.max(0, baseColor[1] + Math.floor(Math.random() * variance) - variance / 2));
-            const b = Math.min(255, Math.max(0, baseColor[2] + Math.floor(Math.random() * variance) - variance / 2));
+        function randomColor(baseColor, variance) {
+            const r = Math.min(255, Math.max(0, baseColor[0] + variance));
+            const g = Math.min(255, Math.max(0, baseColor[1] + variance));
+            const b = Math.min(255, Math.max(0, baseColor[2] + variance));
             return `rgb(${r}, ${g}, ${b})`;
         }
 
@@ -81,6 +80,12 @@
                 Math.floor(Math.random() * 256),
                 Math.floor(Math.random() * 256)
             ];
+        }
+
+        function determineColorDirection(color) {
+            // Determine if the target color is closer to white or black
+            const avg = (color[0] + color[1] + color[2]) / 3;
+            return avg > 128 ? -1 : 1; // Subtract if closer to white, add if closer to black
         }
 
         function setUpGame() {
@@ -98,11 +103,14 @@
 
             function generateColors() {
                 const colors = [];
+                const colorDirection = determineColorDirection(baseColor);
+                const varianceIncrement = 5 * tries;
+
                 for (let i = 0; i < 100; i++) {
                     if (i === Math.floor(Math.random() * 100)) {
                         colors.push(targetColor); // Ensure one square is the target color
                     } else {
-                        colors.push(randomColor(baseColor, minVariance, maxVariance)); // Variance for similar shades
+                        colors.push(randomColor(baseColor, colorDirection * varianceIncrement)); // Incremental color adjustment
                     }
                 }
                 // Shuffle colors
@@ -134,8 +142,6 @@
                             messageElement.textContent = '';
                             winnerMessage.style.display = 'none';
                             loserMessage.style.display = 'block';
-                            minVariance = Math.max(10, minVariance + 1); // Increase variance but keep a minimum limit
-                            maxVariance = Math.max(20, maxVariance + 1); // Increase variance but keep a minimum limit
                             resetGame(); // Restart the game with updated colors
                         }
                     });
