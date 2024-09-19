@@ -115,13 +115,15 @@
                 const colorDirection = determineColorDirection(baseColor);
                 const varianceIncrement = 5 * tries;
 
+                random_winning_index = Math.floor(Math.random() * 100)
                 for (let i = 0; i < 100; i++) {
-                    if (i === Math.floor(Math.random() * 100)) {
+                    if (i === random_winning_index) {
                         colors.push(targetColor); // Ensure one square is the target color
                     } else {
                         colors.push(randomColor(baseColor)); // Incremental color adjustment
                     }
                 }
+                
                 // Shuffle colors
                 colors.sort(() => Math.random() - 0.5);
                 return colors;
