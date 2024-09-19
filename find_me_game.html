@@ -58,12 +58,12 @@
     <div id="game-board"></div>
     <p id="message"></p>
     <p id="winner-message">You are the winner!</p>
-    <p id="loser-message">Wrong color, try again!</p>
+    <p id="loser-message">Wrong color, try again! You have made <span id="tries-count">0</span> wrong choices.</p>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
         let minVariance = 10;
-        let maxVariance = 50;
+        let maxVariance = 30;
         let tries = 0;
         let targetColor, baseColor;
 
@@ -89,6 +89,7 @@
             const messageElement = document.getElementById('message');
             const winnerMessage = document.getElementById('winner-message');
             const loserMessage = document.getElementById('loser-message');
+            const triesCount = document.getElementById('tries-count');
 
             // Pick a random base color for the target
             baseColor = getRandomBaseColor();
@@ -121,6 +122,7 @@
                     square.style.backgroundColor = color;
                     square.addEventListener('click', () => {
                         tries++;
+                        triesCount.textContent = tries;
                         if (color === targetColor) {
                             // Play confetti and show winner message
                             confetti();
@@ -132,11 +134,8 @@
                             messageElement.textContent = '';
                             winnerMessage.style.display = 'none';
                             loserMessage.style.display = 'block';
-                            minVariance += 2;
-                            maxVariance += 2;
-                            baseColor = getRandomBaseColor(); // Pick a new base color for the next round
-                            targetColor = `rgb(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]})`;
-                            targetColorElement.style.backgroundColor = targetColor;
+                            minVariance = Math.max(10, minVariance + 1); // Increase variance but keep a minimum limit
+                            maxVariance = Math.max(20, maxVariance + 1); // Increase variance but keep a minimum limit
                             resetGame(); // Restart the game with updated colors
                         }
                     });
