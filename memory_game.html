@@ -37,15 +37,17 @@
             font-size: 2rem;
             cursor: pointer;
             position: relative;
+            font-size: 1.5rem; /* Adjusted font size for better fit */
         }
         .card.flipped {
             background: white;
             border: 2px solid #007bff;
         }
-        .card img {
+        .card .emoji {
             display: none;
+            font-size: 2rem; /* Adjust font size for emojis */
         }
-        .card.flipped img {
+        .card.flipped .emoji {
             display: block;
         }
         .scores {
@@ -74,7 +76,7 @@
     </div>
 
     <script>
-        const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐸', '🐵', '🐔', '🦄', '🦁', '🐯', '🐨', '🐻', '🐼', '🐻', '🐼', '🦒', '🦓', '🐷', '🐗', '🦚', '🦜', '🐢'];
+        const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐸', '🐵', '🐔', '🦄', '🦁', '🐯', '🐨', '🐻', '🐼', '🦒', '🦓', '🐷', '🐗', '🦚', '🦜', '🐢'];
         let grid = document.getElementById('game-grid');
         let cardValues = [...emojis.slice(0, 12), ...emojis.slice(0, 12)];
         let shuffledValues = cardValues.sort(() => Math.random() - 0.5);
@@ -88,8 +90,7 @@
             card.classList.add('card');
             card.dataset.value = value;
             card.innerHTML = `
-                <img src="" alt="${value}" class="emoji" />
-                ${value}
+                <div class="emoji">${value}</div>
             `;
             card.addEventListener('click', () => flipCard(card));
             return card;
