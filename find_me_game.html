@@ -68,10 +68,11 @@
         let targetColor, baseColor;
         let colorSquares = [];
 
-        function randomColor(baseColor, variance) {
-            const r = Math.min(255, Math.max(0, baseColor[0] + variance));
-            const g = Math.min(255, Math.max(0, baseColor[1] + variance));
-            const b = Math.min(255, Math.max(0, baseColor[2] + variance));
+        function randomColor(baseColor) {
+            const variance = Math.floor(Math.random() * (maxVariance - minVariance + 1)) + minVariance;
+            const r = Math.min(255, Math.max(0, baseColor[0] + Math.floor(Math.random() * variance) - variance / 2));
+            const g = Math.min(255, Math.max(0, baseColor[1] + Math.floor(Math.random() * variance) - variance / 2));
+            const b = Math.min(255, Math.max(0, baseColor[2] + Math.floor(Math.random() * variance) - variance / 2));
             return `rgb(${r}, ${g}, ${b})`;
         }
 
@@ -115,7 +116,7 @@
                     if (i === Math.floor(Math.random() * 100)) {
                         colors.push(targetColor); // Ensure one square is the target color
                     } else {
-                        colors.push(randomColor(baseColor, colorDirection * varianceIncrement)); // Incremental color adjustment
+                        colors.push(randomColor(baseColor)); // Incremental color adjustment
                     }
                 }
                 // Shuffle colors
