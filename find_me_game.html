@@ -73,6 +73,9 @@
             const r = Math.min(255, Math.max(0, baseColor[0] + Math.floor(Math.random() * variance) - variance / 2));
             const g = Math.min(255, Math.max(0, baseColor[1] + Math.floor(Math.random() * variance) - variance / 2));
             const b = Math.min(255, Math.max(0, baseColor[2] + Math.floor(Math.random() * variance) - variance / 2));
+            if (r == baseColor[0] && g == baseColor[1] && b == baseColor[2]) {
+              return randomColor(baseColor)
+            }
             return `rgb(${r}, ${g}, ${b})`;
         }
 
