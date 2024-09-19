@@ -16,7 +16,7 @@
         }
 
         h1 {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         #game-board {
@@ -42,6 +42,22 @@
             background-color: #e74c3c;
         }
 
+        #scores {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+            margin: 20px;
+        }
+
+        .player {
+            font-weight: bold;
+        }
+
+        .turn {
+            background-color: yellow;
+            padding: 5px;
+        }
+
         button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -59,6 +75,10 @@
 </head>
 <body>
     <h1>Memory Game</h1>
+    <div id="scores">
+        <div id="player1" class="player turn">Player 1: <span id="score1">0</span></div>
+        <div id="player2" class="player">Player 2: <span id="score2">0</span></div>
+    </div>
     <div id="game-board"></div>
     <button id="restart-btn">Restart Game</button>
 
@@ -68,19 +88,31 @@
             { name: 'B', matched: false },
             { name: 'C', matched: false },
             { name: 'D', matched: false },
+            { name: 'E', matched: false },
+            { name: 'F', matched: false },
             { name: 'A', matched: false },
             { name: 'B', matched: false },
             { name: 'C', matched: false },
-            { name: 'D', matched: false }
+            { name: 'D', matched: false },
+            { name: 'E', matched: false },
+            { name: 'F', matched: false }
         ];
 
         let firstCard = null;
         let secondCard = null;
         let lockBoard = false;
+        let currentPlayer = 1;
+        let scores = { player1: 0, player2: 0 };
 
         function createBoard() {
             const board = document.getElementById('game-board');
             board.innerHTML = '';
+
+            // Reset scores and players
+            scores = { player1: 0, player2: 0 };
+            currentPlayer = 1;
+            updateScores();
+            updateTurn();
 
             // Shuffle cards
             const shuffledCards = cardsArray.sort(() => 0.5 - Math.random());
@@ -114,6 +146,15 @@
             if (firstCard.card.name === secondCard.card.name) {
                 firstCard.card.matched = true;
                 secondCard.card.matched = true;
+
+                // Update score and keep the current player turn
+                if (currentPlayer === 1) {
+                    scores.player1++;
+                } else {
+                    scores.player2++;
+                }
+
+                updateScores();
                 resetCards();
             } else {
                 setTimeout(() => {
@@ -121,9 +162,35 @@
                     firstCard.cardElement.innerText = '';
                     secondCard.cardElement.classList.remove('flipped');
                     secondCard.cardElement.innerText = '';
+
+                    // Switch player if no match
+                    switchPlayer();
                     resetCards();
                 }, 1000);
             }
+        }
+
+        function switchPlayer() {
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+            updateTurn();
+        }
+
+        function updateTurn() {
+            const player1Div = document.getElementById('player1');
+            const player2Div = document.getElementById('player2');
+
+            if (currentPlayer === 1) {
+                player1Div.classList.add('turn');
+                player2Div.classList.remove('turn');
+            } else {
+                player2Div.classList.add('turn');
+                player1Div.classList.remove('turn');
+            }
+        }
+
+        function updateScores() {
+            document.getElementById('score1').innerText = scores.player1;
+            document.getElementById('score2').innerText = scores.player2;
         }
 
         function resetCards() {
