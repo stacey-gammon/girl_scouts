@@ -78,7 +78,7 @@
     <script>
         const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐸', '🐵', '🐔', '🦄', '🦁', '🐯', '🐨', '🐻', '🐼', '🦒', '🦓', '🐷', '🐗', '🦚', '🦜', '🐢'];
         let grid = document.getElementById('game-grid');
-        let cardValues = [...emojis.slice(0, 12), ...emojis.slice(0, 12)];
+        let cardValues = [...emojis.slice(0, 8), ...emojis.slice(0, 8)];
         let shuffledValues = cardValues.sort(() => Math.random() - 0.5);
         let flippedCards = [];
         let matchedPairs = [];
