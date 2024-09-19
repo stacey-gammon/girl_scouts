@@ -10,6 +10,7 @@
             padding: 20px;
             background-color: #e8f5e9; /* Light green background */
             color: #333;
+            line-height: 1.6;
         }
 
         h1 {
@@ -59,9 +60,24 @@
         }
 
         .prompt {
-            margin-top: 5px;
+            margin-top: 10px;
             font-size: 0.9rem;
             color: #555;
+            background-color: #f1f8e9; /* Very light green */
+            border-left: 4px solid #81c784; /* Medium green */
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .prompt ul {
+            padding-left: 20px;
+            list-style-type: square;
+            margin-top: 10px;
+        }
+
+        .prompt li {
+            margin-bottom: 8px;
+            font-size: 0.85rem;
         }
 
         footer {
@@ -81,34 +97,27 @@
             <li onclick="location.href='memory_game.html';">
                 <a href="memory_game.html">Memory Game</a>
                 <div class="prompt">
-                    Please provide me code to paste into an HTML file to play a game of “Memory”. 
-Keep track of score for each player. Assume two players. If a player gets it correct, they get to go again.
-Show 25 cards - use a 5x5 grid.
-Use a pale blue and yellow color pallet for the web page. Make it look professional, yet playful. Maybe some stripes.
-Use emoji animals for the images behind each card.
-
+                    Please provide me code to paste into an HTML file to play a game of “Memory”. Keep track of score for each player. Assume two players. If a player gets it correct, they get to go again.
+                    Show 25 cards - use a 5x5 grid.
+                    Use a pale blue and yellow color pallet for the web page. Make it look professional, yet playful. Maybe some stripes.
+                    Use emoji animals for the images behind each card.
                 </div>
             </li>
             <li onclick="location.href='find_me_game.html';">
                 <a href="find_me_game.html">Find The Color</a>
                 <div class="prompt">
-  
-
-Please provide me code to paste into an HTML file to play a game of “Find The Color”. 
-The game board should be a 100 squares of different colors.
-<ul>
-    <li>At the top of the game board, tell the user what color square they need to find. Only one square of the 100 should be of that color.</li>
-    <li>If the user picks the right color, have confetti pop out with a message that says “they are the winner!”</li>
-    <li>If the user picks the wrong color, make the background turn grey and tell them they got it wrong.</li>
-</ul>
-
+                    Please provide me code to paste into an HTML file to play a game of “Find The Color”. The game board should be a 100 squares of different colors.
+                    <ul>
+                        <li>At the top of the game board, tell the user what color square they need to find. Only one square of the 100 should be of that color.</li>
+                        <li>If the user picks the right color, have confetti pop out with a message that says “they are the winner!”</li>
+                        <li>If the user picks the wrong color, make the background turn grey and tell them they got it wrong.</li>
+                    </ul>
                 </div>
             </li>
             <!-- Add more list items here for additional pages -->
         </ul>
 
-        
-        <h2>The limit is your imagination! And AI. Be nice, it might be our overlord some day. :-P </h2>
+        <h2>The limit is your imagination! And AI. Be nice, it might be our overlord some day. :-P</h2>
     </div>
     <footer>
     </footer>
