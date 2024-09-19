@@ -7,115 +7,97 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            text-align: center;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f4f8; /* Light blue */
-            color: #333;
         }
-
-        h1 {
-            margin: 20px 0;
-        }
-
-        #target-color {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-
-        .game-board {
+        #game-board {
             display: grid;
             grid-template-columns: repeat(10, 50px);
             grid-template-rows: repeat(10, 50px);
             gap: 5px;
+            justify-content: center;
+            margin-top: 20px;
         }
-
         .square {
             width: 50px;
             height: 50px;
             cursor: pointer;
-            border-radius: 5px;
+            border: 1px solid #ddd;
         }
-
+        #message {
+            margin-top: 20px;
+            font-size: 24px;
+        }
         #sad-face {
             display: none;
-            width: 100px;
-            height: 100px;
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAAg8P2AAAAFElEQVQ4T2NkYGB4sAAwABKcG6G0AAAAAASUVORK5CYII=') no-repeat center center;
-            background-size: contain;
+            font-size: 50px;
+            color: #ff0000;
         }
-
-        #message {
-            font-size: 1.5rem;
-            color: #333;
+        #happy-message {
             display: none;
+            font-size: 24px;
+            color: #00ff00;
         }
     </style>
 </head>
 <body>
     <h1>Find Me Game</h1>
-    <div id="target-color">Find the square with color: </div>
-    <div class="game-board" id="game-board"></div>
-    <div id="sad-face"></div>
-    <div id="message"></div>
+    <p id="color-to-find">Find the color: <span id="target-color"></span></p>
+    <div id="game-board"></div>
+    <p id="message"></p>
+    <p id="happy-message">You are the winner!</p>
+    <p id="sad-face">:(</p>
 
-    <audio id="happy-sound" src="https://www.soundjay.com/button/sounds/beep-07.mp3" preload="auto"></audio>
-    <audio id="sad-sound" src="https://www.soundjay.com/button/beep-09.mp3" preload="auto"></audio>
+    <audio id="happy-sound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+    <audio id="sad-sound" src="https://www.soundjay.com/button/beep-09.wav" preload="auto"></audio>
 
     <script>
         function getRandomColor() {
-            const colors = [
-                '#FF5733', '#33FF57', '#3357FF', '#FF33A2', '#A233FF',
-                '#33FFF0', '#F0FF33', '#FF7F33', '#7FFF33', '#33FF7F',
-                '#FF3333', '#33FF33', '#3333FF', '#FF33FF', '#33FFFF',
-                '#FF7F7F', '#7FFF7F', '#7F7FFF', '#FF7FFF', '#7FFFFF',
-                '#FF5733', '#33FF57', '#3357FF', '#FF33A2', '#A233FF',
-                '#33FFF0', '#F0FF33', '#FF7F33', '#7FFF33', '#33FF7F',
-                '#FF3333', '#33FF33', '#3333FF', '#FF33FF', '#33FFFF',
-                '#FF7F7F', '#7FFF7F', '#7F7FFF', '#FF7FFF', '#7FFFFF',
-                '#FF5733', '#33FF57', '#3357FF', '#FF33A2', '#A233FF',
-                '#33FFF0', '#F0FF33', '#FF7F33', '#7FFF33', '#33FF7F'
-            ];
-            return colors[Math.floor(Math.random() * colors.length)];
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
         }
 
-        function createGameBoard() {
+        function setUpGame() {
             const gameBoard = document.getElementById('game-board');
-            const squares = [];
-            const targetColor = getRandomColor();
-            document.getElementById('target-color').textContent = `Find the square with color: ${targetColor}`;
-
+            const targetColorElement = document.getElementById('target-color');
+            const messageElement = document.getElementById('message');
+            const happyMessage = document.getElementById('happy-message');
+            const sadFace = document.getElementById('sad-face');
+            const happySound = document.getElementById('happy-sound');
+            const sadSound = document.getElementById('sad-sound');
+            
+            let targetColor = getRandomColor();
+            targetColorElement.textContent = targetColor;
+            
+            // Create 100 squares
             for (let i = 0; i < 100; i++) {
-                const color = (i === Math.floor(Math.random() * 100)) ? targetColor : getRandomColor();
                 const square = document.createElement('div');
                 square.className = 'square';
+                const color = getRandomColor();
                 square.style.backgroundColor = color;
-                square.addEventListener('click', () => handleClick(color, targetColor));
+                square.addEventListener('click', () => {
+                    if (color === targetColor) {
+                        happySound.play();
+                        happyMessage.style.display = 'block';
+                        messageElement.textContent = '';
+                        sadFace.style.display = 'none';
+                    } else {
+                        sadSound.play();
+                        sadFace.style.display = 'block';
+                        messageElement.textContent = 'Try again!';
+                        happyMessage.style.display = 'none';
+                    }
+                });
                 gameBoard.appendChild(square);
-                squares.push(square);
             }
         }
 
-        function handleClick(color, targetColor) {
-            if (color === targetColor) {
-                document.getElementById('happy-sound').play();
-                document.getElementById('message').textContent = 'Congratulations! You found the right color!';
-                document.getElementById('message').style.color = targetColor;
-                document.getElementById('message').style.display = 'block';
-            } else {
-                document.getElementById('sad-sound').play();
-                document.getElementById('sad-face').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('sad-face').style.display = 'none';
-                }, 1000);
-            }
-        }
-
-        window.onload = createGameBoard;
+        window.onload = setUpGame;
     </script>
 </body>
 </html>
