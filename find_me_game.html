@@ -66,12 +66,17 @@
         let maxVariance = 30;
         let tries = 0;
         let targetColor, baseColor;
+        let colorSquares = [];
 
         function randomColor(baseColor, variance) {
             const r = Math.min(255, Math.max(0, baseColor[0] + variance));
             const g = Math.min(255, Math.max(0, baseColor[1] + variance));
             const b = Math.min(255, Math.max(0, baseColor[2] + variance));
             return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function adjustColor(color, direction, increment) {
+            return `rgb(${Math.min(255, Math.max(0, color[0] + direction * increment))}, ${Math.min(255, Math.max(0, color[1] + direction * increment))}, ${Math.min(255, Math.max(0, color[2] + direction * increment))})`;
         }
 
         function getRandomBaseColor() {
@@ -118,13 +123,9 @@
                 return colors;
             }
 
-            function resetGame() {
-                // Clear previous squares
+            function createSquares(colors) {
                 gameBoard.innerHTML = '';
-                // Generate new colors
-                const colors = generateColors();
-                // Create squares with shuffled colors
-                colors.forEach(color => {
+                colorSquares = colors.map(color => {
                     const square = document.createElement('div');
                     square.className = 'square';
                     square.style.backgroundColor = color;
@@ -142,14 +143,26 @@
                             messageElement.textContent = '';
                             winnerMessage.style.display = 'none';
                             loserMessage.style.display = 'block';
-                            resetGame(); // Restart the game with updated colors
+                            // Incremental adjustment of colors
+                            const colorDirection = determineColorDirection(baseColor);
+                            const varianceIncrement = 5 * tries;
+                            colorSquares.forEach(square => {
+                                const bgColor = window.getComputedStyle(square).backgroundColor;
+                                if (bgColor !== targetColor) {
+                                    const rgb = bgColor.match(/\d+/g).map(Number);
+                                    square.style.backgroundColor = adjustColor(rgb, colorDirection, varianceIncrement);
+                                }
+                            });
                         }
                     });
                     gameBoard.appendChild(square);
+                    return square;
                 });
             }
 
-            resetGame(); // Initialize the game
+            // Initialize the game
+            const initialColors = generateColors();
+            createSquares(initialColors);
         }
 
         window.onload = setUpGame;
